@@ -26,9 +26,7 @@ conversation with Kix._
 Kix floats over every screen ("Talk to Kix"), exactly like the website's widget. On phones it opens full-screen;
 on wide windows it opens as a floating panel.
 
-| Listens first | Draws the map | Suggests an advisor |
-|---------------|---------------|---------------------|
-| ![Kix asks one question](docs/screenshots/ios/kix-question.png) | ![Journey Map](docs/screenshots/ios/kix-journey-map.png) | ![Advisor suggestion](docs/screenshots/ios/kix-advisor.png) |
+See the [conversation screenshots](#a-conversation-with-kix) below.
 
 - **Streams its reply** token by token, with a typing indicator and quick-reply chips.
 - **Asks before it answers.** One clarifying question about what is in your way (time, money, clarity, or
@@ -68,18 +66,35 @@ equal-width bar.) Grids use equal-height rows and never clip text.
 | **Events** | *"Opportunities are everywhere."* — browse by state | State filter |
 | **Resources** | *"Answers, before you need them."* | Search + category filter |
 
-<details>
-<summary>More screenshots (iOS)</summary>
+## iOS screens
+
+Every screen and its interactive states, captured on an iPhone 16 Pro simulator — also [autonomously](#how-the-demos-were-recorded-fully-autonomous).
+
+### The seven screens
 
 | Home | How it works | Membership | Advisors |
-|------|--------------|------------|----------|
-| ![](docs/screenshots/ios/home.png) | ![](docs/screenshots/ios/how-it-works.png) | ![](docs/screenshots/ios/membership.png) | ![](docs/screenshots/ios/advisors.png) |
+|:----:|:------------:|:----------:|:--------:|
+| <img src="docs/screenshots/ios/home.png" width="220"> | <img src="docs/screenshots/ios/how-it-works.png" width="220"> | <img src="docs/screenshots/ios/membership.png" width="220"> | <img src="docs/screenshots/ios/advisors.png" width="220"> |
 
 | Partners | Events | Resources |
-|----------|--------|-----------|
-| ![](docs/screenshots/ios/partners.png) | ![](docs/screenshots/ios/events.png) | ![](docs/screenshots/ios/resources.png) |
+|:--------:|:------:|:---------:|
+| <img src="docs/screenshots/ios/partners.png" width="220"> | <img src="docs/screenshots/ios/events.png" width="220"> | <img src="docs/screenshots/ios/resources.png" width="220"> |
 
-</details>
+### Interactive states
+
+| Home — "The gap" | Membership — yearly | Membership — Core plan | Advisors — flipped card |
+|:----------------:|:-------------------:|:----------------------:|:-----------------------:|
+| <img src="docs/screenshots/ios/home-gap.png" width="220"> | <img src="docs/screenshots/ios/membership-yearly.png" width="220"> | <img src="docs/screenshots/ios/membership-core.png" width="220"> | <img src="docs/screenshots/ios/advisors-flipped.png" width="220"> |
+
+| Partners — sponsors | Events — North Carolina | Resources — Funding |
+|:-------------------:|:-----------------------:|:-------------------:|
+| <img src="docs/screenshots/ios/partners-sponsors.png" width="220"> | <img src="docs/screenshots/ios/events-filtered.png" width="220"> | <img src="docs/screenshots/ios/resources-filtered.png" width="220"> |
+
+### A conversation with Kix
+
+| 1 · Welcome | 2 · Typing | 3 · Asks one question | 4 · Draws the Journey Map | 5 · Steps ticked | 6 · Suggests an advisor |
+|:-----------:|:----------:|:---------------------:|:-------------------------:|:----------------:|:-----------------------:|
+| <img src="docs/screenshots/ios/kix-welcome.png" width="150"> | <img src="docs/screenshots/ios/kix-typing.png" width="150"> | <img src="docs/screenshots/ios/kix-question.png" width="150"> | <img src="docs/screenshots/ios/kix-journey-map.png" width="150"> | <img src="docs/screenshots/ios/kix-steps-ticked.png" width="150"> | <img src="docs/screenshots/ios/kix-advisor.png" width="150"> |
 
 ## Architecture
 
@@ -167,8 +182,12 @@ the footage.
 | Script | [`tool/record_ios.sh`](tool/record_ios.sh) | [`tool/record_android.sh`](tool/record_android.sh) |
 
 [`tool/process_video.sh`](tool/process_video.sh) then trims with `ffmpeg` (filters, not `-ss` — simulator video is
-variable-frame-rate), scales to 540 px and exports `demo.mp4` + a palette-optimised `demo.gif`. Screenshots are
-single full-resolution frames from the same footage.
+variable-frame-rate), scales to 540 px and exports `demo.mp4` + a palette-optimised `demo.gif`.
+
+**Screenshots** come from a second scripted pass, [`integration_test/screenshots_test.dart`](integration_test/screenshots_test.dart):
+it visits every screen and interactive state, holds each one still and prints `SHOT <name>`; a host loop reads that
+output live and runs `xcrun simctl io <device> screenshot` the moment each line appears — native resolution, no video
+frame-cutting, no timing guesswork.
 
 ```shell
 xcrun simctl boot <udid>                                        # ONE emulator/simulator at a time

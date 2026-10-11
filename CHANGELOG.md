@@ -17,4 +17,4 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   and a floating panel on desktop.
 - Clean Architecture (domain / data / presentation) with BLoC + Cubit, GetIt + injectable, Freezed and fpdart.
 - Unit, bloc and responsive widget tests (including overflow checks at phone, tablet and desktop widths).
-- Autonomously recorded iOS and Android demos with the scripts in `tool/`.
+- Autonomously recorded iOS demo and a 20-shot iOS screenshot set (every screen, its interactive states, and each stage of a Kix conversation), driven by `integration_test`.
